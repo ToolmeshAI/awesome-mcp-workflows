@@ -45,6 +45,18 @@ This list focuses on reusable MCP server shapes rather than pretending every ent
 - Good matches: project hygiene, CRM updates, support workflows, content operations
 - Review questions: are write actions scoped tightly enough to avoid turning a convenience layer into a footgun?
 
+### Social data and publishing workflow server
+
+- Status: `Documented example`
+- Primary job: expose authenticated X data, monitoring, webhooks, extraction jobs, compose flows, and approved write actions to agent workflows
+- Typical inputs: search queries, account names, tweet ids, monitor definitions, webhook targets, compose briefs, approved publish intents
+- Typical outputs: X data results, extraction job records, monitor events, webhook delivery state, draft posts, write action status
+- Trust level: `High`
+- Why it matters: social operations often mix research, monitoring, and publishing, so read-only discovery and approved actions need a clear boundary
+- Good matches: social listening, campaign reporting, influencer research, giveaway operations, support escalation, approval-before-write publishing
+- Review questions: which endpoints are read-only, which actions need explicit approval, and how are API keys kept out of prompts and logs?
+- Evidence note: Xquik documents a remote MCP server at https://docs.xquik.com/mcp/overview and publishes its MCP manifest at https://xquik.com/.well-known/mcp.json.
+
 ### Repository and issue operations server
 
 - Status: `Pattern seed`
