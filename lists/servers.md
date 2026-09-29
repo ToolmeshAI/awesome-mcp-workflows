@@ -21,6 +21,26 @@ This list focuses on reusable MCP server shapes rather than pretending every ent
 - Good matches: onboarding copilot, support enrichment, policy review, docs freshness checks
 - Review questions: where does freshness come from, and how do you prevent stale or conflicting sources from looking authoritative?
 
+### Scoped persistent knowledge store
+
+- Type: `server pattern`
+- Status: `Documented example`
+- Summary: give an agent read-only access to a selected set of saved notes through an expiring grant
+- Primary user: a developer resuming a project in a new agent session
+- Problem solved: retrieve previously saved project decisions without manually pasting the notes into each session
+- Typical inputs: a search query or record identifier; an owner-issued grant scoped to note kinds, tags, sensitivity and expiry
+- Typical outputs: matching notes and record details within the grant's scope
+- Capability mix: a local knowledge store plus MCP search and record retrieval
+- Integration surface: [Hyperconsciousness](https://github.com/louis030195/hyperconsciousness), a developer-alpha Rust CLI and MCP server backed by encrypted, append-only records; the [read-only grant example](https://github.com/louis030195/hyperconsciousness#give-an-agent-limited-access) documents the setup
+- Trust level: `High`, because the local server process has access to store files and keys
+- Trust boundary: grants limit server responses, not the process's OS permissions; a hosted model provider can see returned plaintext
+- Human checkpoint: the owner chooses the notes and creates the expiring read-only grant before connecting the agent
+- Why it matters: the owner can reuse a persistent collection while limiting which records the server returns to a session
+- Good matches: project handoff, decision recall, research continuation
+- Common failure mode: an overly broad grant exposes unintended notes; missing or stale notes leave the agent with incomplete context
+- Review question: does the grant cover only the intended records, and is the model provider an acceptable recipient of their plaintext?
+- Evidence note: the public [README](https://github.com/louis030195/hyperconsciousness#readme) documents the implementation and grant example, and [constraints](https://github.com/louis030195/hyperconsciousness/blob/main/docs/CONSTRAINTS.md) describe its limits. The workflow matches are suggestions; this entry makes no deployment or adoption claim.
+
 ### Data warehouse or BI query server
 
 - Status: `Pattern seed`
