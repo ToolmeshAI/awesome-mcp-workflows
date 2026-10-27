@@ -130,3 +130,21 @@ These are pattern-level workflows designed to be useful for builders. They are n
 - Server mix: local workspace tools + docs index + communication or approval server
 - Human checkpoints: explicit approval before rollout
 - Why it matters: creates a repeatable governance layer for fast-moving teams
+
+### Payment-owner handoff before signing
+
+- Type: `workflow pattern`
+- Status: `Documented example`
+- Summary: an agent prepares a bounded payment action, then hands off the exact foreground terminal command when the wallet owner must approve/sign it
+- Primary user: developer building an agent that consumes paid APIs
+- Problem solved: preparing a transaction and authorizing its signature must remain distinct steps
+- Trigger: an owner-requested direct transfer or EVM payment reaches a foreground-approval boundary
+- Inputs: owner intent, explicit asset/chain/recipient or resource, amount/fee bounds, prepared operation reference; no private keys in model context
+- Outputs: foreground command for owner review, plus operation/receipt state after a separately authorized action
+- Server mix: a local payment MCP runtime such as [Agent Payment Node](https://github.com/nuanu-ai/agent-payment-node), using its documented `apn_foreground_handoff` tool; optional application tools consume only the required result fields
+- Trust boundary: high; a local payment runtime can affect funds and use secret-backed signing. Review untrusted offers and returned commands. A generated command is not authorization and must not be executed automatically by the agent
+- Human checkpoint: the owner checks recipient/resource, asset, chain, amount and fees, and decides whether to run the command in the foreground terminal; stop on ambiguity or changed terms
+- Success signal: the recorded operation state and receipt match the separately approved intent; a prepared operation or successful tool call alone does not establish payment completion
+- Follow-up artifact: a redacted operation reference and outcome in the calling application's approved record; keep keys and unnecessary wallet data out of shared logs
+- Why it matters: makes the approval handoff visible to both the developer and owner, without granting the model general signing authority
+- Evidence note: APN's public README documents the foreground handoff and owner controls. This example covers direct transfers/EVM actions; eligible Solana x402 execution has a distinct owner-admitted policy. APN currently requires Apple Silicon macOS/Node.js 24. No real payment, production adoption, client-specific integration or end-to-end workflow result is asserted here
